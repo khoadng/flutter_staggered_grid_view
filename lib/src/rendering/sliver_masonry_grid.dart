@@ -195,6 +195,15 @@ class RenderSliverMasonryGrid extends RenderSliverMultiBoxAdaptor {
     // The stride is the cross extent of a cell + crossAxisSpacing.
     _stride = (constraints.crossAxisExtent + crossAxisSpacing) / crossAxisCount;
     final childCrossAxisExtent = _stride - crossAxisSpacing;
+
+    if (crossAxisCount <= 0 ||
+        constraints.crossAxisExtent <= 0 ||
+        childCrossAxisExtent <= 0) {
+      geometry = SliverGeometry.zero;
+      childManager.didFinishLayout();
+      return;
+    }
+
     final childConstraints = constraints.asBoxConstraints(
       crossAxisExtent: childCrossAxisExtent,
     );
