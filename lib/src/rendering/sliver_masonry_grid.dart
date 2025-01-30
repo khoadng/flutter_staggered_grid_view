@@ -386,6 +386,12 @@ class RenderSliverMasonryGrid extends RenderSliverMultiBoxAdaptor {
     while (child != null && scrollOffsets.any((x) => x.isInfinite)) {
       final index = _childCrossAxisIndex(child);
       if (index != null) {
+        // bounds check to prevent range error on resizing
+        if (index >= crossAxisCount) {
+          child = childAfter(child);
+          continue;
+        }
+
         final scrollOffset = childScrollOffset(child)!;
         // We only need to set the scroll offsets of the earliest children.
         if (scrollOffsets[index] == double.infinity) {
